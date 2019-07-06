@@ -1,16 +1,18 @@
 package parser;
 
+import java.io.*;
 import java.util.Scanner;
 
-public class Main {
-    public static Scanner scanner = new Scanner(System.in);
-    public static int operation;
-    public static double result = 0;
-    public static void main(String[] args) {
-        // Stwórz aplikację kalkulatora. Kalkulator powinien pozwalać na operowanie na stale jednej zmiennej.
-        // Po uruchomieniu kalkulator mówi:
-        double number = 5;
+@SuppressWarnings("InfiniteLoopStatement")
+class Main {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static int operation;
+    private static double result = 0;
+    private static double number = 5;
 
+
+    public static void main(String[] args) throws IOException {
+            saveToFile("");
         printResult(result);
         operation = firstMenuOption();
         while (true) {
@@ -18,51 +20,63 @@ public class Main {
             operation = menuOption();
         }
 
-
-
-        // **Dodatkowe rozwinięcie.
-        // Zapisuj do pliku wszystkie polecenia użytkownika (NIE ZAPISUJ PYTAŃ KTÓRE KIERUJESZ DO NIEGO)
-        // Po każdym uruchomieniu aplikacji dopisuj do pliku jedną pustą linię żeby rozdzielić kolejne uruchomienia aplikacji.
-        // Plik ma być czytelny dla użytkownika. Wyników nie zapisuj w pliku. Stan pliku po powyższym:
-
-
     }
 
-    public static void printResult(double result) {
+    private static void saveToFile(String command)  {
+        Writer output = null;
+        try {
+            output = new BufferedWriter(new FileWriter("C:\\Users\\mrowi\\IdeaProjects\\Calculator\\src\\main\\java\\parser\\messages.txt", true
+            ));
+            output.write("\n");
+            if (command != "" || command != null){
+               output.append(command);
+            }
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void printResult(double result) {
         System.out.println("Twój wynik to: " + (int)result);
     }
 
-    public static int firstMenuOption() {
+    private static int firstMenuOption() {
         System.out.println("Co chcesz zrobić? (Wpisz przyporządkowaną liczbę) \nNasze opcje to: \n1:dodaj X \n2:odejmij X" +
                 "\n3:mnóż X \n4:dziel X \n5:czyść");
         operation = scanner.nextInt();
         return operation;
     }
-    public static int menuOption() {
+    private static int menuOption() {
         System.out.println("Co chcesz zrobić?");
                 operation = scanner.nextInt();
         return operation;
     }
 
-    public static void selectAvailableOption(int operation, double number) {
+    private static void selectAvailableOption(int operation, double number) {
         switch (operation) {
             case 1:
+                saveToFile("dodaj "+(int)number);
                 result = addNumber(result, number);
                 printResult(result);
                 break;
             case 2:
+                saveToFile("odejmij "+(int)number);
                 result = substractNumber(result, number);
                 printResult(result);
                 break;
             case 3:
+                saveToFile("pomnóż "+(int)number);
                 result = multiplyNumber(result, number);
                 printResult(result);
                 break;
             case 4:
+                saveToFile("dziel "+(int)number);
                 result = divideTheNumber(result, number);
                 printResult(result);
                 break;
             case 5:
+                saveToFile("czyść "+(int)number);
                 printResult(clear());
                 break;
             default:
@@ -71,23 +85,23 @@ public class Main {
         }
     }
 
-    public static double addNumber(double result, double number) {
+    private static double addNumber(double result, double number) {
         return result + number;
     }
 
-    public static double substractNumber(double result, double number) {
+    private static double substractNumber(double result, double number) {
         return result - number;
     }
 
-    public static double multiplyNumber(double result, double number) {
+    private static double multiplyNumber(double result, double number) {
         return result * number;
     }
 
-    public static double divideTheNumber(double result, double number) {
+    private static double divideTheNumber(double result, double number) {
         return result / number;
     }
 
-    public static double clear() {
+    private static double clear() {
         result = 0;
         return result;
     }

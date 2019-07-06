@@ -1,0 +1,8 @@
+﻿
+
+dodaj 5
+dodaj 5
+pomnóż 5
+pomnóż 5
+dziel 5
+czyść 5
